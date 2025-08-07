@@ -8,6 +8,18 @@ const app = express();
 
 app.use(express.json());
 
+// Enable CORS for all origins
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  // Respond quickly to preflight requests
+  if (req.method === 'OPTIONS') {
+    return res.sendStatus(200);
+  }
+  next();
+});
+
 const GALLERY_FILE = 'gallery.json';
 
 // Загружаем список изображений из файла, если он существует
